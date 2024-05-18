@@ -13,6 +13,7 @@ namespace Steam.Data
         public DbSet<CategoryEntity> Categories { get; set; }
         public DbSet<GameCategoryEntity> GameCategory { get; set; }
         public DbSet<GameImageEntity> GameImages { get; set; }
+        public DbSet<NewsEntity> News { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,11 @@ namespace Steam.Data
                 .HasOne(gc => gc.Category)
                 .WithMany(c => c.GameCategories)
                 .HasForeignKey(gc => gc.CategoryId);
+
+            modelBuilder.Entity<NewsEntity>()
+            .HasOne(n => n.Game)
+            .WithMany(g => g.News)
+            .HasForeignKey(n => n.GameId);
         }
 
     }
