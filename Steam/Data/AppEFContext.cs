@@ -20,7 +20,6 @@ namespace Steam.Data
         public DbSet<GameCategoryEntity> GameCategory { get; set; }
         public DbSet<GameImageEntity> GameImages { get; set; }
         public DbSet<NewsEntity> News { get; set; }
-
         public DbSet<UserGameEntity> UserGames { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Steam.Migrations
 {
     /// <inheritdoc />
-    public partial class addtblUserandUserRol : Migration
+    public partial class addtblUserGame : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -161,6 +161,30 @@ namespace Steam.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tblUserGame",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tblUserGame", x => new { x.UserId, x.GameId });
+                    table.ForeignKey(
+                        name: "FK_tblUserGame_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tblUserGame_tblGame_GameId",
+                        column: x => x.GameId,
+                        principalTable: "tblGame",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -199,6 +223,11 @@ namespace Steam.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tblUserGame_GameId",
+                table: "tblUserGame",
+                column: "GameId");
         }
 
         /// <inheritdoc />
@@ -218,6 +247,9 @@ namespace Steam.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "tblUserGame");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
