@@ -21,5 +21,6 @@ namespace Steam.Data.Entities
         public virtual ICollection<GameCategoryEntity> GameCategories { get; set; }
         public virtual ICollection<GameImageEntity> GameImages { get; set; }
         public virtual ICollection<NewsEntity> News { get; set; }
+        public virtual ICollection<UserGameEntity> UserGames { get; set; }
     }
 }
