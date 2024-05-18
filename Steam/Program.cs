@@ -1,4 +1,12 @@
+using Steam.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppEFContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnection"));
+});
 
 // Add services to the container.
 
