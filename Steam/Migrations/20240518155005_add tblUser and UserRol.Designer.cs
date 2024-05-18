@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Steam.Data;
 
@@ -11,9 +12,11 @@ using Steam.Data;
 namespace Steam.Migrations
 {
     [DbContext(typeof(AppEFContext))]
-    partial class AppEFContextModelSnapshot : ModelSnapshot
+    [Migration("20240518155005_add tblUser and UserRol")]
+    partial class addtblUserandUserRol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,21 +373,6 @@ namespace Steam.Migrations
                     b.ToTable("tblNews");
                 });
 
-            modelBuilder.Entity("Steam.Data.Entities.UserGameEntity", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "GameId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("tblUserGame");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Steam.Data.Entities.Identity.RoleEntity", null)
@@ -481,25 +469,6 @@ namespace Steam.Migrations
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("Steam.Data.Entities.UserGameEntity", b =>
-                {
-                    b.HasOne("Steam.Data.Entities.GameEntity", "Game")
-                        .WithMany("UserGames")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Steam.Data.Entities.Identity.UserEntity", "User")
-                        .WithMany("UserGames")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Steam.Data.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("GameCategories");
@@ -512,8 +481,6 @@ namespace Steam.Migrations
                     b.Navigation("GameImages");
 
                     b.Navigation("News");
-
-                    b.Navigation("UserGames");
                 });
 
             modelBuilder.Entity("Steam.Data.Entities.Identity.RoleEntity", b =>
@@ -523,8 +490,6 @@ namespace Steam.Migrations
 
             modelBuilder.Entity("Steam.Data.Entities.Identity.UserEntity", b =>
                 {
-                    b.Navigation("UserGames");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
