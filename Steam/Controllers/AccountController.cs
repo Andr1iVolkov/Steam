@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Steam.Constants;
+using Steam.Data;
 using Steam.Data.Entities.Identity;
 using Steam.Helpers;
 using Steam.Interfaces;
@@ -14,39 +15,43 @@ namespace Steam.Controllers
     {
         private readonly UserManager<UserEntity> _userManager;
         private IJwtTokenService _jwtTokenService;
+        private readonly AppEFContext _context; 
 
         public AccountController(UserManager<UserEntity> userManager,
-            IJwtTokenService jwtTokenService)
+            IJwtTokenService jwtTokenService,
+            AppEFContext context)
         {
+            _context = context;
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;
         }
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginViewModel model)
-        //{
-        //    try
-        //    {
-        //        var user = await _userManager.FindByEmailAsync(model.Email);
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            try
+            {
+                var users = _context.Users.ToList();
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
-        //        if (user == null)
-        //        {
-        //            return BadRequest("Користувача з таким email не існує");
-        //        }
+                if (user == null)
+                {
+                    return BadRequest("Користувача з таким email не існує");
+                }
 
-        //        if (!await _userManager.CheckPasswordAsync(user, model.Password))
-        //        {
-        //            return BadRequest("Неправильний пароль");
-        //        }
+                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    return BadRequest("Неправильний пароль");
+                }
 
-        //        var token = await _jwtTokenService.CreateTokenAsync(user);
-        //        return Ok(new { token });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                var token = await _jwtTokenService.CreateTokenAsync(user);
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)

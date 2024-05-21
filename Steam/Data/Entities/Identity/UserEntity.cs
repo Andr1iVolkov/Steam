@@ -11,8 +11,7 @@ namespace Steam.Data.Entities.Identity
         public string NickName { get; set; }
         [Required, StringLength(100)]
         public string Password { get; set; }
-        [Required, StringLength(100)]
-        public string Email { get; set; }
+       
         [StringLength(2500)]
         public string Photo { get; set; }
         public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
