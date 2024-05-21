@@ -43,8 +43,8 @@ namespace Steam.Controllers
             return View();
         }
 
-        // Створення новини (POST)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //// Створення новини (POST)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
     }
 }
