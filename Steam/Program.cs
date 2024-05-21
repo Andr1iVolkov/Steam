@@ -26,6 +26,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
+app.SeedData();
+
 app.MapControllers();
 
 app.Run();
