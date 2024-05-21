@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Bogus;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Steam.Constants;
 using Steam.Data.Entities.Identity;
 
 
@@ -17,8 +19,26 @@ namespace Steam.Data
                 var context = service.GetRequiredService<AppEFContext>();
                 context.Database.Migrate();
 
-                
+                var userManager = scope.ServiceProvider
+                    .GetRequiredService<UserManager<UserEntity>>();
+
+                var roleManager = scope.ServiceProvider
+                    .GetRequiredService<RoleManager<RoleEntity>>();
+
+                if (!context.Roles.Any())
+                {
+                    foreach (var role in Roles.All)
+                    {
+                        var result = roleManager.CreateAsync(new RoleEntity
+                        {
+                            Name = role
+                        }).Result;
+                    }
+                }
+
             }
+
+
         }
     }
 }

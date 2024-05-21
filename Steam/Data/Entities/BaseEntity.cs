@@ -7,5 +7,6 @@
     public class BaseEntity<T> : IEntity<T>
     {
         public T Id { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }
