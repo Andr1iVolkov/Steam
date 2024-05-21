@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Steam.Data.Entities;
 using Steam.Data.Entities.Identity;
-using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
+
 
 namespace Steam.Data
 {

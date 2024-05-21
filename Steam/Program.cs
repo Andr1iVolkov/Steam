@@ -13,10 +13,8 @@ using Steam.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnection"));
-});
+builder.Services.AddDbContext<AppEFContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQLConnection")));
 
 builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 {
