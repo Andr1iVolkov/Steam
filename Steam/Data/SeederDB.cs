@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Steam.Constants;
 using Steam.Data.Entities.Identity;
 
 
@@ -17,8 +18,9 @@ namespace Steam.Data
                 var context = service.GetRequiredService<AppEFContext>();
                 context.Database.Migrate();
 
-                
             }
+
+
         }
     }
 }
