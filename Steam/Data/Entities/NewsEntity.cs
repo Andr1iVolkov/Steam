@@ -11,7 +11,7 @@ namespace Steam.Data.Entities
         [Required, StringLength(4000)]
         public string Description { get; set; }
         [Required]
-        DateTime DateOfRelease { get; set; }
+        public DateTime DateOfRelease { get; set; }
         [Required, StringLength(500)]
         public string Image { get; set; }
         [Required, StringLength(500)]
