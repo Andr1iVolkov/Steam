@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Steam.Data;
 using Steam.Data.Entities;
+using Steam.Models.Category;
 using Steam.Models.Helpers;
 
 namespace Steam.Mapper
@@ -11,6 +12,9 @@ namespace Steam.Mapper
         public AppMapProfile(AppEFContext context) 
         {
             _context = context;
+
+            CreateMap<CategoryEntity, CategoryItemViewModel>();
+            CreateMap<CategoryCreateViewModel, CategoryEntity>();
 
         }
     }
