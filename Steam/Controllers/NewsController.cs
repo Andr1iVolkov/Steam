@@ -52,7 +52,6 @@ namespace Steam.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NewsCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -98,7 +97,6 @@ namespace Steam.Controllers
         }
 
         [HttpPut("edit/{id}")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, NewsEditViewModel model)
         {
             if (id != model.Id)
@@ -128,7 +126,6 @@ namespace Steam.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var newsEntity = await _context.News.FindAsync(id);
