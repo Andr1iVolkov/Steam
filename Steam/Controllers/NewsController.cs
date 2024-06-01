@@ -42,7 +42,7 @@ namespace Steam.Controllers
                 Id = newsEntity.Id,
                 Title = newsEntity.Title,
                 Description = newsEntity.Description,
-                DeteOfRelease = newsEntity.DateOfRelease,
+                DateOfRelease = newsEntity.DateOfRelease,
                 Image = newsEntity.Image,
                 VideoURL = newsEntity.VideoURL,
                 GameId = newsEntity.GameId
@@ -133,9 +133,10 @@ namespace Steam.Controllers
             {
                 return NotFound();
             }
+
             _context.News.Remove(newsEntity);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
