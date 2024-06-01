@@ -26,12 +26,12 @@ namespace Steam.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
-            return Ok(await _context.Games
-                .Include(g => g.GameCategories)
-                .ThenInclude(gc => gc.Category)
-                .Select(x => _mapper.Map<CategoryItemViewModel>(x))
-                .ToListAsync());
+            var games = await _context.Games
+                                      .Include(g => g.GameCategories)
+                                      .ThenInclude(gc => gc.Category)
+                                      .ToListAsync();
+            var gameViewModels = _mapper.Map<List<GameItemViewModel>>(games);
+            return Ok(gameViewModels);
         }
 
         // Найти ігру за id
@@ -50,36 +50,7 @@ namespace Steam.Controllers
                 return NotFound();
             }
 
-            var model = new GameItemViewModel
-            {
-                Id = gameEntity.Id,
-                Name = gameEntity.Name,
-                Price = gameEntity.Price,
-                Description = gameEntity.Description,
-                DateOfRelease = gameEntity.DateOfRelease,
-                SystemRequirements = gameEntity.SystemRequirements,
-                Categories = gameEntity.GameCategories.Select(gc => new Models.Category.CategoryItemViewModel
-                {
-                    Id = gc.Category.Id,
-                    Name = gc.Category.Name
-                }).ToList(),
-                Images = gameEntity.GameImages.Select(gi => new GameImageViewModel
-                {
-                    Id = gi.Id,
-                    Name = gi.Name,
-                    Priority = gi.Priority
-                }).ToList(),
-                News = gameEntity.News.Select(n => new NewsItemViewModel
-                {
-                    Id = n.Id,
-                    Title = n.Title,
-                    Description = n.Description,
-                    DateOfRelease = n.DateOfRelease,
-                    Image = n.Image,
-                    VideoURL = n.VideoURL
-                }).ToList()
-
-            };
+           var model = _mapper.Map<GameItemViewModel>(gameEntity);
             return Ok(model);
         }
 
@@ -88,14 +59,7 @@ namespace Steam.Controllers
         {
             if (ModelState.IsValid)
             {
-                var gameEntity = new GameEntity
-                {
-                    Name = model.Name,
-                    Price = model.Price,
-                    Description = model.Description,
-                    DateOfRelease = model.DateOfRelease,
-                    SystemRequirements = model.SystemRequirements
-                };
+                var gameEntity = _mapper.Map<GameEntity>(model);
 
                 _context.Add(gameEntity);
                 await _context.SaveChangesAsync();
@@ -143,17 +107,9 @@ namespace Steam.Controllers
                 return NotFound();
             }
 
-            var model = new GameEditViewModel
-            {
-                Id = gameEntity.Id,
-                Name = gameEntity.Name,
-                Price = gameEntity.Price,
-                Description = gameEntity.Description,
-                DateOfRelease = gameEntity.DateOfRelease,
-                SystemRequirements = gameEntity.SystemRequirements,
-                SelectedCategoryIds = gameEntity.GameCategories.Select(gc => gc.CategoryId).ToList(),
-                ImageUrls = gameEntity.GameImages.Select(gi => gi.Name).ToList()
-            };
+            var model = _mapper.Map<GameEditViewModel>(gameEntity);
+            model.SelectedCategoryIds = gameEntity.GameCategories.Select(gc => gc.CategoryId).ToList();
+            model.ImageUrls = gameEntity.GameImages.Select(gi => gi.Name).ToList();     
 
             return Ok(model);
         }
@@ -175,11 +131,7 @@ namespace Steam.Controllers
                         return NotFound();
                     }
 
-                    gameEntity.Name = model.Name;
-                    gameEntity.Price = model.Price;
-                    gameEntity.Description = model.Description;
-                    gameEntity.DateOfRelease = model.DateOfRelease;
-                    gameEntity.SystemRequirements = model.SystemRequirements;
+                    _mapper.Map(model, gameEntity);
 
                     // Оновлення категорій 
                     var existingCategories = gameEntity.GameCategories.ToList();
