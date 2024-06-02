@@ -63,6 +63,12 @@ builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
     cfg.AddProfile(new AppMapProfile(provider.GetService<AppEFContext>()));
 }).CreateMapper());
 
+builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new AppMapProfile(provider.GetService<AppEFContext>()));
+}).CreateMapper());
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
