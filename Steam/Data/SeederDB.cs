@@ -166,7 +166,7 @@ namespace Steam.Data
 
                 #region Додавання користувачів та їхніх ігор
 
-                if (context.UserGames.Count() < 10)
+                if (context.UserGames.Count() < 3)
                 {
                     var users = context.Users.ToList();
                     var games = context.Games.ToList();

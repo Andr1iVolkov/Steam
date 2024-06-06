@@ -1,34 +1,15 @@
-import axios from "axios";
-import { useEffect, useState } from 'react';
-
-interface ICategoryItem {
-  nickName: string,
-  password: string,
-  email: string,
-  imageBase64: string 
-}
+import Header from './components/Header';
+import NewsListComponent from './components/news/NewsListComponent';
 
 const App = () => {
 
-  const [list, setList] = useState<ICategoryItem[]>([]);
-
-  useEffect(() => {
-    axios.get<ICategoryItem[]>("http://localhost:5173/api/categories")
-    .then(resp => {
-      const {data} = resp
-      console.log("good", data)
-      setList(data);
-    })
-    .catch(error => {
-      console.log("error", error)
-    });
-  }, []);
-
   return (
-    <>
-      <h1>Hello</h1>
-    </>
-  )
+    <div className="App">
+        <Header />
+        <NewsListComponent />
+        
+    </div>
+);
 }
 
 export default App
