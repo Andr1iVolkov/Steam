@@ -30,7 +30,7 @@ builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-var singinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<String>("JwtSecretKey")));
+var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("JwtSecretKey")));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(options =>
     cfg.SaveToken = true;
     cfg.TokenValidationParameters = new TokenValidationParameters()
     {
-        IssuerSigningKey = singinKey,
+        IssuerSigningKey = signinKey,
         ValidateAudience = false,
         ValidateIssuer = false,
         ValidateLifetime = true,
@@ -51,27 +51,27 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new AppMapProfile(provider.GetService<AppEFContext>()));
 }).CreateMapper());
-
-builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new AppMapProfile(provider.GetService<AppEFContext>()));
-}).CreateMapper());
-
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -84,11 +84,14 @@ if (!Directory.Exists(dir))
 {
     Directory.CreateDirectory(dir);
 }
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(dir),
     RequestPath = "/images"
 });
+
+app.UseCors("AllowSpecificOrigin"); 
 
 app.UseAuthentication();
 app.UseAuthorization();

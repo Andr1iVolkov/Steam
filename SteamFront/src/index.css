@@ -6,6 +6,7 @@ body{
 /* NewsItemComponent */
 
 .div-list-news {
+  padding-top: 50px;
   background-color: #282b31;
   min-height: 100vh;
   display: flex;
@@ -19,6 +20,8 @@ body{
   max-width: 980px;
   width: 100%;
   margin-bottom: 24px;
+  font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
+  color: white;
 }
 
 /* Header */

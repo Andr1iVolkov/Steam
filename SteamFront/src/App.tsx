@@ -1,6 +1,8 @@
 import Header from './components/Header';
 import NewsListComponent from './components/news/NewsListComponent';
 
+
+
 const App = () => {
 
   return (
